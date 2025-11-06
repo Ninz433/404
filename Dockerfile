@@ -1,16 +1,11 @@
-# Step 1: Use official Nginx image from the Docker Hub
+# Use lightweight web server
 FROM nginx:alpine
 
-# Step 2: Set the working directory in the container
-WORKDIR /usr/share/nginx/html
+# Copy your static files into nginx's default html directory
+COPY . /usr/share/nginx/html
 
-# Step 3: Copy all your application files (HTML, CSS, JS) into the Nginx directory
-COPY . .
+# Expose port 8080 for Cloud Run
+EXPOSE 8080
 
-# Step 4: Expose port 9000 (though Nginx defaults to port 80, we'll use 9000 as requested)
-EXPOSE 8000
-
-# Step 5: Change Nginx default configuration to listen on port 9000 (optional)
-RUN sed -i 's/80/8000/' /etc/nginx/conf.d/default.conf
-
-# Nginx will automatically serve the files from /usr/share/nginx/html directory
+# Run nginx
+CMD ["nginx", "-g", "daemon off;"]
